@@ -85,7 +85,7 @@ if ( $action ) {
 				echo json_encode( $result );
 
 			} else {
-				echo json_encode( 'no url detected, bitch at maintainer' );
+				echo json_encode( 'no url detected, either check your input or complain to maintainer' );
 			}
 
 			break;
