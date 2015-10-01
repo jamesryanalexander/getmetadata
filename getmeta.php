@@ -66,7 +66,7 @@ function getTitle( $url ) {
 
 		return $title;
 	} else {
-		return json_encode( 'no data recieved' );
+		return 'no data recieved';
 	}
 
 }
@@ -93,7 +93,7 @@ if ( $action ) {
 
 		
 		default:
-		echo "not title?";
+		echo json_encode( "not title?" );
 			break;
 	} 
 
