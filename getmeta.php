@@ -64,6 +64,17 @@ function getTitle( $url ) {
 			$title = $titleDom->item(0)->textContent;
 		}
 
+		// fall back if first tag it finds is null cause... apparently that's a thing occasionally from testing
+
+		if ( $title == null ) {
+
+	        if ( $titleDom->length > 1 ) {
+
+				$title = $titleDom->item(1)->textContent;
+
+			}
+		}
+
 		return $title;
 	} else {
 		return 'no data recieved';
