@@ -6,7 +6,7 @@ This is usually done in JSON but isn't required.
 
 The script will respond back, in JSON (watch for quotes) with the html <title> of the url you sent.
 
-Uses:
-PHP5
-Apache
-PHP5-curl
+## Uses:
+* PHP5
+* Apache
+* PHP5-curl
