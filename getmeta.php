@@ -47,6 +47,20 @@ function getPageData( $url ) {
 
 }
 
+function getMetaTags( $url ) {
+
+	$pagedata = getPageData( $url );
+
+	$page = new DomDocument();
+	libxml_use_internal_errors(true);
+	$page->loadHTML( $pagedata );
+
+	$metaDom = $page->getelementsbytagname( 'meta' );
+
+	return $metaDom;
+
+}
+
 function getTitle( $url ) {
 
 	$pagedata = getPageData( $url );
@@ -82,6 +96,54 @@ function getTitle( $url ) {
 
 }
 
+function getDescription ( $url, $type = null ) {
+
+	$metaTags = getMetaTags( $url );
+	$desc  = null;
+	$ogdesc = null;
+
+	for ( $i = 0; $i < $metaTags->length; $i++ ) {
+
+		$metaTag = $metaTags->item($i);
+		if ( strtolower( $metaTag->getAttribute('name') ) == 'description' ) {
+			$desc = $metaTag->getAttribute('content');
+		}
+
+		if ( strtolower( $metaTag->getAttribute('property') ) == 'og:description' ) {
+			$ogdesc = $metaTag->getAttribute('content');
+		}
+
+	}
+
+	if ( $type = 'og' ) {
+
+		if ( $ogdesc ) {
+			return $ogdesc;
+		} else {
+			return 'no description found';
+		}
+
+	} else {
+
+		if ( $desc ) {
+
+			return $desc;
+
+		} else {
+
+			if ( $ogdesc ) {
+
+				return $ogdesc;
+
+			} else {
+
+				return 'no description found';
+			}
+		}
+	}
+
+}
+
 
 if ( $action ) {
 
@@ -96,13 +158,49 @@ if ( $action ) {
 				echo json_encode( $result );
 
 			} else {
+
 				echo json_encode( 'no url detected, either check your input or complain to maintainer' );
+
 			}
 
 			break;
 
 
-		
+		case 'description':
+
+			if ( $url ) {
+
+				$result = getDescription( $url );
+
+				echo json_encode( $result );
+
+			} else {
+
+				echo json_encode( 'no url detected, either check your input or complain to maintainer' );
+
+			}
+
+			break;
+
+		case 'ogdescription':
+
+			if ( $url ) {
+
+				$result = getDescription( $url, 'og' );
+
+				echo json_encode( $result );
+
+			} else {
+
+				echo json_encode( 'no url detected, either check your input or complain to maintainer' );
+
+			}
+
+			break;
+
+		case 'multi':
+
+
 		default:
 		echo json_encode( "not title?" );
 			break;
